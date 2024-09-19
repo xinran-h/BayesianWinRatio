@@ -86,16 +86,16 @@ the trial. The futility monitoring rule at the interim look time k, k =
 1, 2, 3, is
 
 $$
-P(\widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}) > c(n_k)
-$$ , where $c\left(n_k\right) = (\frac{n_k}{N.max})^{\lambda}$ is the
-cutoff parameter, $\lambda$ is a tuning parameter tuned to achieve
-desired operating characteristics, and $\mathbf{Y}_{k1}$ and
-$\mathbf{Y}_{k0}$ are observed data from both arms. This monitoring rule
-specifies that, if there is a low probability that the win ratio is
-greater than 1.5, we will stop the trial early. The interim look time is
-inferred by the recruitment interval, which is the time between
-enrolling two consecutive patients. For example, if we enroll 4 patients
-over 1 month, the recruitment interval is 0.25.
+P(\widehat{WR} > 1.5 \vert Y_k1, Y_k0) > c(n_k)
+$$ , where $c(n_k) = (\frac{n_k}{N.max})^{\lambda}$ is the cutoff
+parameter, $\lambda$ is a tuning parameter tuned to achieve desired
+operating characteristics, and $Y_k1$ and $Y_k0$ are observed data from
+both arms. This monitoring rule specifies that, if there is a low
+probability that the win ratio is greater than 1.5, we will stop the
+trial early. The interim look time is inferred by the recruitment
+interval, which is the time between enrolling two consecutive patients.
+For example, if we enroll 4 patients over 1 month, the recruitment
+interval is 0.25.
 
 ### demo data
 
