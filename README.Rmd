@@ -62,7 +62,7 @@ The output is a list with the following components:
 
 ## An example
 
-Suppose we conduct a trial with a maximum sample size of 20 patients, who are randomized to two arms (control = 1, treatment = 2). Patients are followed for two events, recurrence and death. We want to monitor the trial to decide if we should stop the trial early when the the treatment arm therapeutic effect is not satisfactory. The interim look occurs when 5, 10, and 15 patients are enrolled, with a total of 3 interim looks. We use a composite endpoint, the win ratio, to monitor the trial. The futility monitoring rule at the interim look time $k, k = 1, 2, 3,$ is 
+Suppose we conduct a trial with a maximum sample size of 20 patients, who are randomized to two arms (control = 1, treatment = 2). Patients are followed for two events, recurrence and death. We want to monitor the trial to decide if we should stop the trial early when the the treatment arm therapeutic effect is not satisfactory. The interim look occurs when 5, 10, and 15 patients are enrolled, with a total of 3 interim looks. We use a composite endpoint, the win ratio, to monitor the trial. The futility monitoring rule at the interim look time k, k = 1, 2, 3, is 
 
 $$
 P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),

@@ -82,8 +82,8 @@ the trial to decide if we should stop the trial early when the the
 treatment arm therapeutic effect is not satisfactory. The interim look
 occurs when 5, 10, and 15 patients are enrolled, with a total of 3
 interim looks. We use a composite endpoint, the win ratio, to monitor
-the trial. The futility monitoring rule at the interim look time
-$k, k = 1, 2, 3,$ is
+the trial. The futility monitoring rule at the interim look time k, k =
+1, 2, 3, is
 
 $$
 P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
