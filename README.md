@@ -16,57 +16,95 @@ Endpoints”.
 You can install the development version of BayesWinRatio from
 [GitHub](https://github.com/) with:
 
-\`\`\` r{eval = F} install.packages(“devtools”)
-devtools::install_github(“xinran-h/BayesianWinRatio”)
+``` r
+install.packages("devtools")
+devtools::install_github("xinran-h/BayesianWinRatio")
 
-library(BayesianWinRatio) library(MASS) library(survival)
-library(parallel) library(Rcpp)
+library(BayesianWinRatio)
+library(MASS) 
+library(survival) 
+library(parallel) 
+library(Rcpp) 
+```
 
+## BayesianWinRatio in a nutshell
 
-    ## BayesianWinRatio in a nutshell
+The function OCC.Table is the core function of BayesianWinRatio. This
+function perform Bayesian futility monitoring based on one simulation
+data or one real data, and returns the operating characteristics.
 
-    The function OCC.Table is the core function of BayesianWinRatio.  This function perform Bayesian futility monitoring based on one simulation data or one real data,  and returns the operating characteristics.
+- myData: A matrix with N.max rows and 7 columns. The first five columns
+  represent: time to recurrence, time to death, time to censor,
+  treatment arm, id. Leave the last two columns blank. Note that time to
+  recurrence and time to death cannot be NA. If these are NA due to
+  censoring, please use a large number to represent the time. For the
+  treatment arm, use 1 for the treatment arm and 0 for the control arm.
+- N.max: Maximum number of patients to enroll.
+- design: A numeric value indicating the type of design. 1 = proposed
+  design, 2 = time to recurrence design, 3= time to death design, 4 =
+  time to first event design.
+- cens_upper: Upper limit for the censoring time.The censoring time is
+  generated from Uniform(0, cens_upper).
+- design: A numeric value indicating the type of design. 1 = proposed
+  design, 2 = time to recurrence design, 3= time to death design, 4 =
+  time to first event design.
+- cohort: Interim cohort, which is a numeric vector of the number of
+  patients enrolled at each interim look.
+- recruit.int: Recruitment interval.
+- m0: Prior mean for mu.
+- L0: Prior variance for mu.
+- v0: For the proposed design, this is the prior degrees of freedom for
+  Sigma. For the traditional designs, v0/2 is the prior shape for Sigma.
+- S0:For the proposed design, this is the prior scale matrix for Sigma.
+  For the traditional designs, v0\*S0/2 is the prior scale for Sigma.
+- time_max: The upper limit for the recurrence and death time sampled
+  from truncated normal. This will set the upper limit to to time_max
+  rather than Inf.
+- eta: A pre-specified lower bound of acceptable performance based on
+  historical information.
+- lambda: Cutoff parameter.
+- thin_MCMC: Thinning degree.
+- Niter: Number of iterations for gibbs sampler.
 
-      
-    - myData: A matrix with N.max rows and 7 columns. The first five columns represent: time to recurrence, time to death, time to censor, treatment arm, id. Leave the last two columns blank. Note that time to recurrence and time to death cannot be NA. If these are NA due to censoring, please use a large number to represent the time. For the treatment arm, use 1 for the treatment arm and 0 for the control arm.
-    - N.max: Maximum number of patients to enroll.
-    - design: A numeric value indicating the type of design. 1 = proposed design, 2 = time to recurrence design, 3= time to death design, 4 = time to first event design.
-    - cens_upper: Upper limit for the censoring time.The censoring time is generated from Uniform(0, cens_upper).
-    - design: A numeric value indicating the type of design. 1 = proposed design, 2 = time to recurrence design, 3= time to death design, 4 = time to first event design.
-    - cohort: Interim cohort, which is a numeric vector of the number of patients enrolled at each interim look.
-    - recruit.int: Recruitment interval.
-    - m0: Prior mean for mu.
-    - L0: Prior variance for mu.
-    - v0: For the proposed design, this is the prior degrees of freedom for Sigma. For the traditional designs, v0/2 is the prior shape for Sigma.
-    - S0:For the proposed design, this is the prior scale matrix for Sigma. For the traditional designs, v0*S0/2 is the prior scale for Sigma.
-    - time_max: The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.
-    - eta: A pre-specified lower bound of acceptable performance based on historical information.
-    - lambda: Cutoff parameter.
-    - thin_MCMC: Thinning degree.
-    - Niter: Number of iterations for gibbs sampler.
+The output is a list with the following components:
 
-    The output is a list with the following components:
+- trial.stop: A value of 1 or 0, 1 = trial stopped and 0 = not stopped.
+- trialER.stop: A value of 1 or 0, 1 = trial stopped early and 0 = not
+  stopped early.
+- pts.stop: A numeric value represents the actual sample size used.
+- probs: A numeric value, which is the posterior probability of
+  $(\widehat{WR} > \eta)$.
+- WR: A numeric value, which is the estimated posterior win ratio.
 
-    - trial.stop: A value of 1 or 0, 1 = trial stopped and 0 = not stopped. 
-    - trialER.stop: A value of 1 or 0, 1 = trial stopped early and 0 = not stopped early.
-    - pts.stop: A numeric value represents the actual sample size used.
-    - probs: A numeric value, which is the posterior probability of $(\widehat{WR} > \eta)$. 
-    - WR: A numeric value, which is the estimated posterior win ratio.
+## An example
 
-    ## An example
+Suppose we conduct a trial with a maximum sample size of 20 patients,
+who are randomized to two arms (control = 1, treatment = 2). Patients
+are followed for two events, recurrence and death. We want to monitor
+the trial to decide if we should stop the trial early when the the
+treatment arm therapeutic effect is not satisfactory. The interim look
+occurs when 5, 10, and 15 patients are enrolled, with a total of 3
+interim looks. We use a composite endpoint, the win ratio, to monitor
+the trial. The futility monitoring rule at the interim look time
+$k, k = 1, 2, 3,$ is $$
+P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
+$$. where \$c(n_k) = ()^\$ is the cutoff parameter, $\lambda$ is a
+tuning parameter tuned to achieve desired operating characteristics, and
+$\mathbf{Y}_{k1} ad \mathbf{Y}_{k0}$ are observed data from both arms.
+This monitoring rule specifies that, if there is a low probability that
+the win ratio is greater than 1.5, we will stop the trial early. The
+interim look time is inferred by the recruitment interval, which is the
+time between enrolling two consecutive patients. For example, if we
+enroll 4 patients over 1 month, the recruitment interval is 0.25.
 
-    Suppose we conduct a trial with a maximum sample size of 20 patients, who are randomized to two arms (control = 1, treatment = 2). Patients are followed for two events, recurrence and death. We want to monitor the trial to decide if we should stop the trial early when the the treatment arm therapeutic effect is not satisfactory. The interim look occurs when 5, 10, and 15 patients are enrolled, with a total of 3 interim looks. We use a composite endpoint, the win ratio, to monitor the trial. The futility monitoring rule at the interim look time $k, k = 1, 2, 3,$ is 
-    $$
-    P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
-    $$.
-    where $c\left(n_k\right) = (\frac{n_k}{N.max})^\lambda $ is the cutoff parameter, $\lambda$ is a tuning parameter tuned to achieve desired operating characteristics, and $\mathbf{Y}_{k1} ad \mathbf{Y}_{k0}$ are observed data from both arms. This monitoring rule specifies that, if there is a low probability that the win ratio is greater than 1.5, we will stop the trial early. The interim look time is inferred by the recruitment interval,  which is the time between enrolling two consecutive patients. For example, if we enroll 4 patients over 1 month, the recruitment interval is 0.25.
+### demo data
 
-    ### demo data
-    The demo data can be loaded by the following code.
+The demo data can be loaded by the following code.
 
-    ``` r
-    library(BayesianWinRatio)
-    test
+``` r
+library(BayesianWinRatio)
+test
+```
 
 ### Tuning lambda
 

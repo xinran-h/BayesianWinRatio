@@ -25,7 +25,7 @@ This package performs Bayesian monitoring using the win ratio approach based on 
 You can install the development version of BayesWinRatio from [GitHub](https://github.com/) with:
 
 
-``` r{eval = F}
+``` {r eval = F}
 install.packages("devtools")
 devtools::install_github("xinran-h/BayesianWinRatio")
 
