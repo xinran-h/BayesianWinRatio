@@ -85,7 +85,7 @@ interim looks. We use a composite endpoint, the win ratio, to monitor
 the trial. The futility monitoring rule at the interim look time k, k =
 1, 2, 3, is
 
-`P(\widehat{WR} > 1.5 \vert Y_{k1}, Y_{k0}) > c(n_k)`,
+$P(\widehat{WR} > 1.5 \vert Y_{k1}, Y_{k0}) > c(n_k)$,
 
 where $c(n_k) = (\frac{n_k}{N.max})^{\lambda}$ is the cutoff parameter,
 $\lambda$ is a tuning parameter tuned to achieve desired operating
