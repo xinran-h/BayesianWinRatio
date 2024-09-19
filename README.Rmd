@@ -22,18 +22,12 @@ This package performs Bayesian monitoring using the win ratio approach based on 
 
 ## Installation and Load libraries
 
-You can install the development version of BayesWinRatio from [GitHub](https://github.com/) with:
+You can install the development version of BayesianWinRatio from [GitHub](https://github.com/) with:
 
 
 ``` {r eval = F}
 install.packages("devtools")
 devtools::install_github("xinran-h/BayesianWinRatio")
-
-library(BayesianWinRatio)
-library(MASS) 
-library(survival) 
-library(parallel) 
-library(Rcpp) 
 ```
 
 ## BayesianWinRatio in a nutshell
@@ -72,7 +66,7 @@ Suppose we conduct a trial with a maximum sample size of 20 patients, who are ra
 $$
 P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
 $$.
-where $c\left(n_k\right) = (\frac{n_k}{N.max})^\lambda $ is the cutoff parameter, $\lambda$ is a tuning parameter tuned to achieve desired operating characteristics, and $\mathbf{Y}_{k1} ad \mathbf{Y}_{k0}$ are observed data from both arms. This monitoring rule specifies that, if there is a low probability that the win ratio is greater than 1.5, we will stop the trial early. The interim look time is inferred by the recruitment interval,  which is the time between enrolling two consecutive patients. For example, if we enroll 4 patients over 1 month, the recruitment interval is 0.25.
+where $c\left(n_k\right) = (\frac{n_k}{N.max})^{\lambda} $ is the cutoff parameter, $\lambda$ is a tuning parameter tuned to achieve desired operating characteristics, and $\mathbf{Y}_{k1}$ and $\mathbf{Y}_{k0}$ are observed data from both arms. This monitoring rule specifies that, if there is a low probability that the win ratio is greater than 1.5, we will stop the trial early. The interim look time is inferred by the recruitment interval,  which is the time between enrolling two consecutive patients. For example, if we enroll 4 patients over 1 month, the recruitment interval is 0.25.
 
 ### demo data
 The demo data can be loaded by the following code.
@@ -86,6 +80,9 @@ test
 In the design phase, we first determine the tuning parameter $\lambda$ by simulation. We tune $\lambda$ to achieve a percentage of early termination (PET) at a desirable level (say, 0.1) under the null scenario, where the two arms have identical distribution.Assuming that the two event time follow a bivariate lognormal distribution, we estimate the mean time to each event (log) and the variance-covariance matrix between the two events using historical data. Suppose the recruitment interval is 0.25, we generate 1000 simulation data, by calling the function data.simulation,  as follows:
 
 ```{r eval = F}
+library(MASS) 
+library(survival) 
+library(parallel) 
 data = data.simulation(N.sim = 1000, N.max = 20,
                        mu.trt = c(0.2,0.3), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
                        mu.ctrl = c(0.2,0.3),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),

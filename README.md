@@ -13,18 +13,12 @@ Endpoints”.
 
 ## Installation and Load libraries
 
-You can install the development version of BayesWinRatio from
+You can install the development version of BayesianWinRatio from
 [GitHub](https://github.com/) with:
 
 ``` r
 install.packages("devtools")
 devtools::install_github("xinran-h/BayesianWinRatio")
-
-library(BayesianWinRatio)
-library(MASS) 
-library(survival) 
-library(parallel) 
-library(Rcpp) 
 ```
 
 ## BayesianWinRatio in a nutshell
@@ -88,13 +82,13 @@ interim looks. We use a composite endpoint, the win ratio, to monitor
 the trial. The futility monitoring rule at the interim look time
 $k, k = 1, 2, 3,$ is $$
 P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
-$$. where \$c(n_k) = ()^\$ is the cutoff parameter, $\lambda$ is a
+$$. where \$c(n_k) = ()^{} \$ is the cutoff parameter, $\lambda$ is a
 tuning parameter tuned to achieve desired operating characteristics, and
-$\mathbf{Y}_{k1} ad \mathbf{Y}_{k0}$ are observed data from both arms.
-This monitoring rule specifies that, if there is a low probability that
-the win ratio is greater than 1.5, we will stop the trial early. The
-interim look time is inferred by the recruitment interval, which is the
-time between enrolling two consecutive patients. For example, if we
+$\mathbf{Y}_{k1}$ and $\mathbf{Y}_{k0}$ are observed data from both
+arms. This monitoring rule specifies that, if there is a low probability
+that the win ratio is greater than 1.5, we will stop the trial early.
+The interim look time is inferred by the recruitment interval, which is
+the time between enrolling two consecutive patients. For example, if we
 enroll 4 patients over 1 month, the recruitment interval is 0.25.
 
 ### demo data
@@ -119,6 +113,9 @@ recruitment interval is 0.25, we generate 1000 simulation data, by
 calling the function data.simulation, as follows:
 
 ``` r
+library(MASS) 
+library(survival) 
+library(parallel) 
 data = data.simulation(N.sim = 1000, N.max = 20,
                        mu.trt = c(0.2,0.3), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
                        mu.ctrl = c(0.2,0.3),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
