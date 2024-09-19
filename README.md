@@ -87,7 +87,7 @@ $k, k = 1, 2, 3,$ is
 
 $$
 P\left( \widehat{WR} > 1.5 \vert \mathbf{Y}_{k1}, \mathbf{Y}_{k0}\right) > c\left(n_k\right),
-$$. where \$c(n_k) = ()^{} \$ is the cutoff parameter, $\lambda$ is a
+$$ where \$c(n_k) = ()^{} \$ is the cutoff parameter, $\lambda$ is a
 tuning parameter tuned to achieve desired operating characteristics, and
 $\mathbf{Y}_{k1}$ and $\mathbf{Y}_{k0}$ are observed data from both
 arms. This monitoring rule specifies that, if there is a low probability
