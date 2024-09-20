@@ -37,11 +37,6 @@ data or one real data, and returns the operating characteristics.
 - **design**: a numeric value indicating the type of design. 1 =
   proposed design, 2 = time to recurrence design, 3= time to death
   design, 4 = time to first event design.
-- **cens_upper**: Upper limit for the censoring time.The censoring time
-  is generated from Uniform(0, cens_upper).
-- **design**: a numeric value indicating the type of design. 1 =
-  proposed design, 2 = time to recurrence design, 3= time to death
-  design, 4 = time to first event design.
 - **cohort**: interim cohort, which is a numeric vector of the number of
   patients enrolled at each interim look.
 - **recruit.int**: recruitment interval.
@@ -114,8 +109,9 @@ scenario, where the two arms have identical distribution.Assuming that
 the two event time follow a bivariate lognormal distribution, we
 estimate the mean time to each event (log) and the variance-covariance
 matrix between the two events using historical data. Suppose the
-recruitment interval is 0.25, we generate 1000 simulation data, by
-calling the function data.simulation, as follows:
+recruitment interval is 0.25, and the censoring time follows a uniform
+distribution of $U(0,2)$ we generate 1000 simulation data, by calling
+the function data.simulation, as follows:
 
 ``` r
 library(MASS) 
@@ -124,7 +120,7 @@ library(parallel)
 data = data.simulation(N.sim = 1000, N.max = 20,
                        mu.trt = c(0.2,0.3), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
                        mu.ctrl = c(0.2,0.3),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
-                       cens_upper = 40)
+                       cens_upper = 2)
 ```
 
 The parameter $\lambda$ is calibrated by calling the function OCC.Table.

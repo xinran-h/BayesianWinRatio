@@ -1,3 +1,34 @@
+#' data.simulation
+#' 
+#' This function simulates data. 
+#' 
+#' @param N.sim Number of simulations.
+#' @param N.max   Maximum number of patients to enroll.
+#' @param mu.trt A vector containing the mean time to each event (logarithm) for the treatment arm.
+#' @param Sigma.trt A vector representing the variance-covariance matrix of the time to each event (logarithm) for the treatment arm. 
+#' @param mu.ctrl A vector containing the mean time to each event (logarithm) for the control arm.
+#' @param Sigma.ctrl A vector representing the variance-covariance matrix of the time to each event (logarithm) for the control arm. 
+#' @param cens_upper Upper limit for the censoring time, assuming that the censoring time is generated from Uniform(0, cens_upper).
+#' @returns A list with the following components:\tabular{ll}{
+#'    \code{trial.stop} \tab A value of 1 or 0, 1 = trial stopped and 0 = not stopped.  \cr
+#'    \tab \cr
+#'    \code{trialER.stop} \tab A value of 1 or 0, 1 = trial stopped early and 0 = not stopped early. \cr
+#'    \tab \cr
+#'    \code{pts.stop} \tab A numeric value represents the actual sample size used. \cr
+#'    \tab \cr
+#'    \code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
+#'    \tab \cr
+#'    \code{WR} \tab A numeric value, which is the estimated posterior win ratio. \cr    
+#' }
+#' @examples
+#' \dontrun{
+#' data.simulation(N.sim = 1000, N.max = 20,
+#'                mu.trt = c(0.2,0.3), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
+#'                mu.ctrl = c(0.2,0.3),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
+#'                cens_upper = 5)
+#' }
+
+#' @export
 data.simulation<- function(N.sim,N.max,mu.trt,Sigma.trt,
                            mu.ctrl,Sigma.ctrl,cens_upper
 ){

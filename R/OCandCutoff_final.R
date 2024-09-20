@@ -30,14 +30,14 @@
 #' }
 #' @examples
 #' \dontrun{
-#' OCC.Table(N.max = 100,
-#' cens_upper = 20,
+#' OCC.Table(myData = data,
+#' N.max = 100,
 #' design = 1, 
 #' cohort = c(40,60,80),
 #' recruit.int  = 0.25,
 #' m0 = c(0,0),L0 = diag(10^6, 2), 
 #' v0 = 4,S0 = diag(10^(-6), 2),
-#' time_max = 20,eta = 1,lambda = 0.25,
+#' time_max = 10,eta = 1.5,lambda = 0.25,
 #'  thin_MCMC = 5,Niter = 100000)
 #' }
 
