@@ -2,3 +2,6 @@
 
 export(OCC.Table)
 export(data.simulation)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp,evalCpp)
+useDynLib(BayesianWinRatio, .registration = TRUE)

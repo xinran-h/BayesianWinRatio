@@ -97,7 +97,7 @@ The demo data can be loaded by the following code.
 
 ``` r
 library(BayesianWinRatio)
-test
+dd = BayesianWinRatio::test
 ```
 
 ### Tuning lambda
@@ -193,7 +193,6 @@ manipulation:
 ``` r
 
 # data preprocessing
-dd = test
 ## recode arm: control - 0, trt - 1
 dd$arm = as.numeric(dd$arm == 2)
 ## recode unobserved event time with a very large value, say 99999

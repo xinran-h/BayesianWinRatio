@@ -70,7 +70,7 @@ where $c(n_k) = (\frac{n_k}{N.max})^{\lambda}$ is the cutoff parameter, $\lambda
 The demo data can be loaded by the following code.
 ```{r, eval = F}
 library(BayesianWinRatio)
-test
+dd = BayesianWinRatio::test
 ```
 
 ### Tuning lambda
@@ -96,7 +96,7 @@ a <- 0  # The lowest value of mylambda, update based on the simulation results.
 b <- 30 # The highest value of mylambda, update based on the simulation results.
 tolerance <- 0.01   # Tolerance for stopping the bisection
 
-N.sim = 10000
+N.sim = 1000
 # Initialize the bisection loop
 while (b - a > tolerance) {
   c <- (a + b) / 2
@@ -148,7 +148,6 @@ After determining the tuning parameter $\lambda$, we can implement the trial. We
 ```{r, eval = F}
 
 # data preprocessing
-dd = test
 ## recode arm: control - 0, trt - 1
 dd$arm = as.numeric(dd$arm == 2)
 ## recode unobserved event time with a very large value, say 99999

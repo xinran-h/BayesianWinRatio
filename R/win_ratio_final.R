@@ -22,7 +22,9 @@ est_cens_time = function(fit,n){
 #' 
 #' This function is an intermediate function used inside the OCC.Table function to obtain the posterior probability of (WR > eta).
 
-
+#' @useDynLib BayesianWinRatio, .registration = TRUE
+#' @importFrom Rcpp evalCpp
+#' @exportPattern "^[[:alpha:]]+"
 #' @param currentdd   The data at a interim analysis point.
 #' @param n_current   Sample size at a interim analysis point.
 #' @param Time_current Time at a interim analysis point.

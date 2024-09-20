@@ -25,12 +25,12 @@ update_theta(N_iter, dd, n, m0, L0, S0, v0, time_max)
 }
 \value{
 A list with the following components:\tabular{ll}{
-   \code{MU} \tab A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  \cr
-   \tab \cr
-   \code{post_data} \tab A cube with n rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains n pairs of event times sampled from bivariate lognormal distribution with mean MU and variance Sigma, where
-                    Mu and Sigma are generated from the posterior normal and inverse-wishart distribution, respectively, from the v-th iteration of the gibbs sampler.  \cr
-   \tab \cr
-   \code{Sigma} \tab A cube with two rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains posterior covariance matrix generated from the v-th iteration of the gibbs sampler.   \cr
+\code{MU} \tab A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  \cr
+\tab \cr
+\code{post_data} \tab A cube with n rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains n pairs of event times sampled from bivariate lognormal distribution with mean MU and variance Sigma, where
+Mu and Sigma are generated from the posterior normal and inverse-wishart distribution, respectively, from the v-th iteration of the gibbs sampler.  \cr
+\tab \cr
+\code{Sigma} \tab A cube with two rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains posterior covariance matrix generated from the v-th iteration of the gibbs sampler.   \cr
 }
 }
 \description{

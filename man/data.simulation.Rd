@@ -31,15 +31,15 @@ data.simulation(
 }
 \value{
 A list with the following components:\tabular{ll}{
-   \code{trial.stop} \tab A value of 1 or 0, 1 = trial stopped and 0 = not stopped.  \cr
-   \tab \cr
-   \code{trialER.stop} \tab A value of 1 or 0, 1 = trial stopped early and 0 = not stopped early. \cr
-   \tab \cr
-   \code{pts.stop} \tab A numeric value represents the actual sample size used. \cr
-   \tab \cr
-   \code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
-   \tab \cr
-   \code{WR} \tab A numeric value, which is the estimated posterior win ratio. \cr    
+\code{trial.stop} \tab A value of 1 or 0, 1 = trial stopped and 0 = not stopped.  \cr
+\tab \cr
+\code{trialER.stop} \tab A value of 1 or 0, 1 = trial stopped early and 0 = not stopped early. \cr
+\tab \cr
+\code{pts.stop} \tab A numeric value represents the actual sample size used. \cr
+\tab \cr
+\code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
+\tab \cr
+\code{WR} \tab A numeric value, which is the estimated posterior win ratio. \cr
 }
 }
 \description{

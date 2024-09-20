@@ -3,6 +3,10 @@
 #' This is the main function of BayesWinRatio. 
 #' This function perform Bayesian futility monitoring based on one simulation data or one real data,  and returns the operating characteristics.
 #' 
+#' @useDynLib BayesianWinRatio, .registration = TRUE
+#' @importFrom Rcpp evalCpp
+#' @exportPattern "^[[:alpha:]]+"
+#' 
 #' @param myData A matrix with N.max rows and 7 columns. The first five columns represent: time to recurrence, time to death, time to censor, treatment arm, id. Leave the last two columns blank. Note that time to recurrence and time to death cannot be NA. If these are NA due to censoring, please use a large number to represent the time. For the treatment arm, use 1 for the treatment arm and 0 for the control arm.
 #' @param N.max   Maximum number of patients to enroll.
 #' @param design A numeric value indicating the type of design. 1 = proposed design, 2 = time to recurrence design, 3= time to death design, 4 = time to first event design.

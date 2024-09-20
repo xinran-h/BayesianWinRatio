@@ -52,11 +52,11 @@ winratio(
 }
 \value{
 A list with the following components:\tabular{ll}{
-   \code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
-   \tab \cr
-   \code{cutoff} \tab A numeric value. cutoff = (n_current/N.max)**lambda.  \cr
-   \tab \cr
-   \code{WR} \tab A numeric value. cutoff = the average posterior win ratio.  \cr
+\code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
+\tab \cr
+\code{cutoff} \tab A numeric value. cutoff = (n_current/N.max)**lambda.  \cr
+\tab \cr
+\code{WR} \tab A numeric value. cutoff = the average posterior win ratio.  \cr
 }
 }
 \description{
