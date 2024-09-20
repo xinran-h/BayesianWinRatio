@@ -4,7 +4,7 @@
 #' A test data used for demo. 
 #'
 #' @format ## `test`
-#' A dataframe of 20 rows and 5 columns:
+#' A dataframe of 100 rows and 5 columns:
 #' \describe{
 #'   \item{id}{Patient ID}
 #'   \item{arm}{A numeric value representing treatment arms. 1 = control, 2 = treatment}

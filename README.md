@@ -70,12 +70,12 @@ The output is a list with the following components:
 
 ## An example
 
-Suppose we conduct a trial with a maximum sample size of 20 patients,
+Suppose we conduct a trial with a maximum sample size of 100 patients,
 who are randomized to two arms (control = 1, treatment = 2). Patients
 are followed for two events, recurrence and death. We want to monitor
 the trial to decide if we should stop the trial early when the the
 treatment arm therapeutic effect is not satisfactory. The interim look
-occurs when 5, 10, and 15 patients are enrolled, with a total of 3
+occurs when 40, 60, and 80 patients are enrolled, with a total of 3
 interim looks. We use a composite endpoint, the win ratio, to monitor
 the trial. The futility monitoring rule at the interim look time k, k =
 1, 2, 3, is
@@ -110,17 +110,17 @@ the two event time follow a bivariate lognormal distribution, we
 estimate the mean time to each event (log) and the variance-covariance
 matrix between the two events using historical data. Suppose the
 recruitment interval is 0.25, and the censoring time follows a uniform
-distribution of $U(0,2)$ we generate 1000 simulation data, by calling
+distribution of $U(0,25)$ we generate 1000 simulation data, by calling
 the function data.simulation, as follows:
 
 ``` r
 library(MASS) 
 library(survival) 
 library(parallel) 
-data = data.simulation(N.sim = 1000, N.max = 20,
-                       mu.trt = c(0.2,0.3), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
-                       mu.ctrl = c(0.2,0.3),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
-                       cens_upper = 2)
+data = data.simulation(N.sim = 1000, N.max = 100,
+                       mu.trt = c(log(2), log(5)), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
+                       mu.ctrl = c(log(2), log(5)),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
+                       cens_upper = 25)
 ```
 
 The parameter $\lambda$ is calibrated by calling the function OCC.Table.
@@ -146,9 +146,9 @@ while (b - a > tolerance) {
   ### run simulation in parallel, can be changed to other parallel packages such as doParallel, future, etc.
   sim_results <- parallel::mclapply(1:N.sim, function(x){OCC.Table(
     myData = data[,,x],
-    N.max = 20,
+    N.max = 100,
     design = 1,
-    cohort = c(5, 10, 15),
+    cohort = c(40,60,80),
     recruit.int  = 0.25,
     m0 = c(0,0),
     L0 = diag(10^6, 2),
@@ -183,12 +183,16 @@ while (b - a > tolerance) {
   c
 ```
 
+We may need to play around with different values of a and b to find the
+optimal lambda. The above code is just a demonstration of how to tune
+the lambda.
+
 ### Trial Implementation
 
-After determining the tuning parameter $\lambda$, we can implement the
-trial. We first preprocess the real data to make it compatible with the
-function OCC.Table. The following code shows how to do the data
-manipulation:
+After determining the tuning parameter $\lambda$, say 10, we can
+implement the trial. We first preprocess the real data to make it
+compatible with the function OCC.Table. The following code shows how to
+do the data manipulation:
 
 ``` r
 
@@ -205,13 +209,13 @@ colnames(myData) = c("recurrence_t", "death_t", "censor_t",   "group", "id", "de
 
 After the data preprocessing, we can run the function OCC.Table to get
 the operating characteristics of the trial. At the first interim look
-when 5 patients are enrolled, we run the function OCC.Table as follows:
+when 40 patients are enrolled, we run the function OCC.Table as follows:
 
 ``` r
 # run OCC.Table using myData
 OCC.Table(
    myData = myData,
-    N.max = 20,
+    N.max = 40,
     design = 1,
     cohort = c(5),
     recruit.int  = 0.25,
@@ -226,16 +230,16 @@ OCC.Table(
 ```
 
 If trialER.stop = 1, we stop the trial early. Otherwise, we continue to
-enroll patients. At the second interim look when 10 patients are
+enroll patients. At the second interim look when 60 patients are
 enrolled, we run the function OCC.Table as follows:
 
 ``` r
 # run OCC.Table using myData
 OCC.Table(
    myData = myData,
-    N.max = 20,
+    N.max = 100,
     design = 1,
-    cohort = c(10),
+    cohort = c(60),
     recruit.int  = 0.25,
     m0 = c(0,0),
     L0 = diag(10^6, 2),
@@ -248,16 +252,16 @@ OCC.Table(
 ```
 
 If trialER.stop = 1, we stop the trial early. Otherwise, we continue to
-enroll patients. At the third interim look when 15 patients are
+enroll patients. At the third interim look when 80 patients are
 enrolled, we run the function OCC.Table:
 
 ``` r
 # run OCC.Table using myData
 OCC.Table(
    myData = myData,
-    N.max = 20,
+    N.max = 100,
     design = 1,
-    cohort = c(15),
+    cohort = c(80),
     recruit.int  = 0.25,
     m0 = c(0,0),
     L0 = diag(10^6, 2),
