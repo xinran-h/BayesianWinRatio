@@ -22,7 +22,7 @@
 #'    \code{Sigma} \tab A cube with two rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains posterior covariance matrix generated from the v-th iteration of the gibbs sampler.   \cr
 #' }
 update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max) {
-    .Call('_BayesianWinRatio_update_theta', PACKAGE = 'BayesianWinRatio', N_iter, dd, n, m0, L0, S0, v0, time_max)
+    .Call(`_BayesianWinRatio_update_theta`, N_iter, dd, n, m0, L0, S0, v0, time_max)
 }
 
 #' update_theta_univariate
@@ -39,7 +39,7 @@ update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max) {
 #' @param time_max The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.
 #' @return A list of theta. theta is A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  
 update_theta_univariate <- function(N_iter, dd, n, L0, m0, v0, S0, time_max) {
-    .Call('_BayesianWinRatio_update_theta_univariate', PACKAGE = 'BayesianWinRatio', N_iter, dd, n, L0, m0, v0, S0, time_max)
+    .Call(`_BayesianWinRatio_update_theta_univariate`, N_iter, dd, n, L0, m0, v0, S0, time_max)
 }
 
 #' compare
@@ -57,6 +57,6 @@ update_theta_univariate <- function(N_iter, dd, n, L0, m0, v0, S0, time_max) {
 #' @param surv_ctrl A field containing M_iter elements, each of which is a vector of length n_current_ctrl. These vectors store the survival probabilities generated from the estimated censoring distribution from the control arm.
 #' @return A list of WR. WR is a matrix with one row and M_iter columns. Each row contains the estimated win ratio for each iteration.
 compare <- function(M_iter, n_current_ctrl, n_current_trt, postData, time_trt, time_ctrl, surv_trt, surv_ctrl) {
-    .Call('_BayesianWinRatio_compare', PACKAGE = 'BayesianWinRatio', M_iter, n_current_ctrl, n_current_trt, postData, time_trt, time_ctrl, surv_trt, surv_ctrl)
+    .Call(`_BayesianWinRatio_compare`, M_iter, n_current_ctrl, n_current_trt, postData, time_trt, time_ctrl, surv_trt, surv_ctrl)
 }
 
