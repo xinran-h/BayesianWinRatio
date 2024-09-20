@@ -164,9 +164,9 @@ After the data preprocessing, we can run the function OCC.Table to get the opera
 # run OCC.Table using myData
 OCC.Table(
    myData = myData,
-    N.max = 40,
+    N.max = 100,
     design = 1,
-    cohort = c(5),
+    cohort = c(40),
     recruit.int  = 0.25,
     m0 = c(0,0),
     L0 = diag(10^6, 2),
