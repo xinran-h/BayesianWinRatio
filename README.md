@@ -137,7 +137,7 @@ a <- 0  # The lowest value of mylambda, update based on the simulation results.
 b <- 30 # The highest value of mylambda, update based on the simulation results.
 tolerance <- 0.01   # Tolerance for stopping the bisection
 
-N.sim = 10000
+N.sim = 1000
 # Initialize the bisection loop
 while (b - a > tolerance) {
   c <- (a + b) / 2
