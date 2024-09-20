@@ -117,6 +117,7 @@ the function data.simulation, as follows:
 library(MASS) 
 library(survival) 
 library(parallel) 
+RNGkind("L'Ecuyer-CMRG");set.seed(126);
 data = data.simulation(N.sim = 1000, N.max = 100,
                        mu.trt = c(log(2), log(5)), Sigma.trt = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
                        mu.ctrl = c(log(2), log(5)),Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T),
