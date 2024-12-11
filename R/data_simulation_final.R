@@ -9,16 +9,20 @@
 #' @param mu.ctrl A vector containing the mean time to each event (logarithm) for the control arm.
 #' @param Sigma.ctrl A vector representing the variance-covariance matrix of the time to each event (logarithm) for the control arm. 
 #' @param cens_upper Upper limit for the censoring time, assuming that the censoring time is generated from Uniform(0, cens_upper).
-#' @returns A list with the following components:\tabular{ll}{
-#'    \code{trial.stop} \tab A value of 1 or 0, 1 = trial stopped and 0 = not stopped.  \cr
+#' @returns An array with N.max rows, 7 columns and N.sim slices. The columns are:\tabular{ll}{
+#'    \code{recurrence_t} \tab Time to recurrence.  \cr
 #'    \tab \cr
-#'    \code{trialER.stop} \tab A value of 1 or 0, 1 = trial stopped early and 0 = not stopped early. \cr
+#'    \code{death_t} \tab Time to death. \cr
 #'    \tab \cr
-#'    \code{pts.stop} \tab A numeric value represents the actual sample size used. \cr
+#'    \code{censor_t} \tab Time to censor. \cr
 #'    \tab \cr
-#'    \code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
+#'    \code{group} \tab Treatment assignment.  \cr
 #'    \tab \cr
-#'    \code{WR} \tab A numeric value, which is the estimated posterior win ratio. \cr    
+#'    \code{id} \tab Patient id, numeric starting from 1. \cr 
+#'    \tab \cr
+#'    \code{delta1} \tab Placeholder for the censoring indicator for recurrence, leave blank. \cr
+#'    \tab \cr
+#'    \code{delta2} \tab Placeholder for the censoring indicator for death, leave blank. \cr
 #' }
 #' @examples
 #' \dontrun{
