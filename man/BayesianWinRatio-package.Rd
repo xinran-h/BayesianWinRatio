@@ -9,7 +9,7 @@
 This package performs Bayesian futility monitoring using the win ratio approach based on the manuscript "The Win Ratio Approach in Bayesian Monitoring for Two-Arm Phase II Clinical Trial Designs with Multiple Time-to-Event Endpoints".
 }
 \author{
-\strong{Maintainer}: Xinran Huang \email{huangxrtc@gmail.com} (\href{https://orcid.org/0000-0002-8126-9735}{ORCID})
+\strong{Maintainer}: Xinran Huang \email{huangxr.2019@gmail.com} (\href{https://orcid.org/0000-0002-8126-9735}{ORCID})
 
 }
 \keyword{internal}
