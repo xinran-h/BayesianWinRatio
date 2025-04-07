@@ -44,7 +44,7 @@ est_cens_time = function(fit,n){
 #'    \tab \cr
 #'    \code{cutoff} \tab A numeric value. cutoff = (n_current/N.max)**lambda.  \cr
 #'    \tab \cr
-#'    \code{WR} \tab A numeric value. cutoff = the average posterior win ratio.  \cr
+#'    \code{WR} \tab A numeric value. WR = the average posterior win ratio.  \cr
 #' }
 #' @examples
 #' \dontrun{
