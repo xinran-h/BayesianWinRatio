@@ -27,5 +27,5 @@ update_theta_univariate(N_iter, dd, n, L0, m0, v0, S0, time_max)
 A list of theta. theta is A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.
 }
 \description{
-This function is an interim function used within the winratio function that performs Gibbs sampler and returns posterior mean, variance, and event times (log) for the conventional designs, following Supplementary file S1.
+This function is an interim function used within the OCC.Table function that performs Gibbs sampler and returns posterior mean, variance, and event times (log) for the conventional designs, following Supplementary file S1.
 }

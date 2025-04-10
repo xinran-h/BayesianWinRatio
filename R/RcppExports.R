@@ -27,7 +27,7 @@ update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max) {
 
 #' update_theta_univariate
 #'
-#' This function is an interim function used within the winratio function that performs Gibbs sampler and returns posterior mean, variance, and event times (log) for the conventional designs, following Supplementary file S1.
+#' This function is an interim function used within the OCC.Table function that performs Gibbs sampler and returns posterior mean, variance, and event times (log) for the conventional designs, following Supplementary file S1.
 #' 
 #' @param N_iter Number of iterations for gibbs sampler.
 #' @param dd The data at a interim analysis point for either treatment or control arm. Either use currentData.trt or currentData.ctrl.
