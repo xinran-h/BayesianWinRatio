@@ -108,7 +108,7 @@ dd = BayesianWinRatio::test
 In the design phase, we first determine the tuning parameter $\lambda$
 by simulation. We tune $\lambda$ to achieve a percentage of early
 termination (PET) at a desirable level (say, 0.1) under the null
-scenario, where the two arms have identical distribution.Assuming that
+scenario, where the two arms have identical distribution. Assuming that
 the two event time follow a bivariate lognormal distribution, we
 estimate the mean time to each event (log) and the variance-covariance
 matrix between the two events using historical data. Suppose the
@@ -117,8 +117,6 @@ distribution of $U(0,25)$ we generate 1000 simulation data, by calling
 the function data.simulation, as follows:
 
 ``` r
-library(MASS) 
-library(survival) 
 library(parallel) 
 RNGkind("L'Ecuyer-CMRG");set.seed(126);
 data = data.simulation(N.sim = 1000, N.max = 100,

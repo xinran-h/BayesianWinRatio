@@ -90,8 +90,8 @@ winratio = function(currentdd,n_current,Time_current,
   M_iter = length(idxs)
   
   # Step 2: estimating censoring distribution
-  trt_cens.est = survival::survfit(Surv(currentData.trt[,"censor_t"], 1 - currentData.trt[,"delta2"]) ~ 1 )
-  ctrl_cens.est =survival::survfit(Surv(currentData.ctrl[,"censor_t"], 1 - currentData.ctrl[,"delta2"]) ~ 1 )
+  trt_cens.est = survival::survfit(survival::Surv(currentData.trt[,"censor_t"], 1 - currentData.trt[,"delta2"]) ~ 1 )
+  ctrl_cens.est =survival::survfit(survival::Surv(currentData.ctrl[,"censor_t"], 1 - currentData.ctrl[,"delta2"]) ~ 1 )
   
   # Step 3: sample R and D for each group, and generate censoring time for each patient
   ### initialize posterior data
@@ -130,8 +130,8 @@ winratio = function(currentdd,n_current,Time_current,
     R = postData[,1,j.iter] 
     D = postData[,2,j.iter] 
     
-    fit.trt = survival::survfit(Surv(C[1:n.current.trt], 1-delta2[1:n.current.trt]) ~ 1)
-    fit.ctrl = survival::survfit(Surv(C[(n.current.trt+1):(n_current-1)], 
+    fit.trt = survival::survfit(survival::Surv(C[1:n.current.trt], 1-delta2[1:n.current.trt]) ~ 1)
+    fit.ctrl = survival::survfit(survival::Surv(C[(n.current.trt+1):(n_current-1)], 
                             1-delta2[(n.current.trt+1):(n_current-1)]) ~ 1)
     
     time.trt[[j.iter]] = summary(fit.trt)$time
