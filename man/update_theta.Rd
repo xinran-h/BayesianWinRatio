@@ -4,7 +4,7 @@
 \alias{update_theta}
 \title{update_theta}
 \usage{
-update_theta(N_iter, dd, n, m0, L0, S0, v0, time_max)
+update_theta(N_iter, dd, n, m0, L0, S0, v0, time_max, init_Sigma)
 }
 \arguments{
 \item{N_iter}{Number of iterations for gibbs sampler.}
@@ -22,6 +22,8 @@ update_theta(N_iter, dd, n, m0, L0, S0, v0, time_max)
 \item{v0}{Prior degrees of freedom for Sigma.trt/Sigma.ctrl.}
 
 \item{time_max}{The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.}
+
+\item{init_Sigma}{An initial Sigma covariance matrix.}
 }
 \value{
 A list with the following components:\tabular{ll}{

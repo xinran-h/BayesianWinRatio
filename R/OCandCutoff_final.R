@@ -21,6 +21,8 @@
 #' @param lambda  Cutoff parameter.
 #' @param thin_MCMC  Thinning degree.
 #' @param Niter Number of iterations for gibbs sampler.
+#' @param Sigma.ctrl If design = 1, this is the matrix representing the variance-covariance matrix of the time to each event (logarithm) for the control arm; otherwise, this is the variance of time to event (logarithm) for the control arm. For example, when design = 2, this is the variance of time to recurrence for the control arm; when design = 4, this is the variance of time to first event for the control arm.
+
 #' @returns A list with the following components:\tabular{ll}{
 #'    \code{trial.stop} \tab A value of 1 or 0, 1 = trial stopped and 0 = not stopped.  \cr
 #'    \tab \cr
@@ -42,7 +44,7 @@
 #' m0 = c(0,0),L0 = diag(10^6, 2), 
 #' v0 = 4,S0 = diag(10^(-6), 2),
 #' time_max = 10,eta = 1.5,lambda = 0.25,
-#'  thin_MCMC = 5,Niter = 100000)
+#'  thin_MCMC = 5,Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T)
 #' }
 
 
@@ -51,7 +53,7 @@
 #' @export
 OCC.Table<- function(myData,N.max,design, cohort, recruit.int,
                      m0,L0, v0, S0,time_max,eta, lambda, thin_MCMC,
-                     Niter){
+                     Niter, Sigma.ctrl){
   WR = NA
     
     tryCatch({
@@ -84,7 +86,8 @@ OCC.Table<- function(myData,N.max,design, cohort, recruit.int,
                         lambda = lambda,
                         N.max = N.max,
                         thin_MCMC = thin_MCMC,
-                        Niter = Niter)
+                        Niter = Niter,
+                        Sigma.ctrl = Sigma.ctrl)
       probs = result$probs;
       cutoff = result$cutoff;
       WR = result$WR;
@@ -114,12 +117,27 @@ OCC.Table<- function(myData,N.max,design, cohort, recruit.int,
       currentData.ctrl = currentData[currentData[,3]==0,]
 
       # update theta
+      ## obtain sample variance as an input for starting value of Sigma, if NA use Sigma.ctrl
+  
+        temp = stats::var( log(currentData.trt[,1]) , na.rm = T)
+        if (is.na(temp)){
+          init_trt_Sigma = Sigma.ctrl
+        }else {
+          init_trt_Sigma = temp
+        }   
       trt.post = update_theta_univariate(N_iter = Niter, dd = currentData.trt, 
                                                      n = n.current.trt, L0 = L0,m0 = m0, v0 = v0, S0 = S0,
-                                                     time_max = time_max)
+                                                     time_max = time_max, init_Sigma = init_trt_Sigma)
+      
+      temp = stats::var( log(currentData.ctrl[,1]) , na.rm = T)
+      if (is.na(temp)){
+        init_ctrl_Sigma = Sigma.ctrl
+      }else {
+        init_ctrl_Sigma = temp
+      }   
       ctrl.post = update_theta_univariate(N_iter = Niter, dd = currentData.ctrl, 
                                                       n = n.current.ctrl, L0 = L0, m0 = m0, v0 = v0, S0 = S0,
-                                                      time_max = time_max)
+                                                      time_max = time_max, init_Sigma = init_ctrl_Sigma)
       burn_MCMC = as.integer(0.3*Niter)
       idxs <- seq(burn_MCMC, Niter, by = thin_MCMC)
       

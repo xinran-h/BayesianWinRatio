@@ -4,7 +4,7 @@
 \alias{update_theta_univariate}
 \title{update_theta_univariate}
 \usage{
-update_theta_univariate(N_iter, dd, n, L0, m0, v0, S0, time_max)
+update_theta_univariate(N_iter, dd, n, L0, m0, v0, S0, time_max, init_Sigma)
 }
 \arguments{
 \item{N_iter}{Number of iterations for gibbs sampler.}
@@ -22,6 +22,8 @@ update_theta_univariate(N_iter, dd, n, L0, m0, v0, S0, time_max)
 \item{S0}{v0*S0/2 is the prior scale for Sigma.trt/Sigma.ctrl.}
 
 \item{time_max}{The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.}
+
+\item{init_Sigma}{A numeric value represents the time to event (logarithm) for the control arm.}
 }
 \value{
 A list of theta. theta is A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.

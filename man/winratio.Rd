@@ -18,7 +18,8 @@ winratio(
   lambda,
   N.max,
   thin_MCMC,
-  Niter
+  Niter,
+  Sigma.ctrl
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ winratio(
 \item{thin_MCMC}{Thinning degree.}
 
 \item{Niter}{Number of iterations for gibbs sampler.}
+
+\item{Sigma.ctrl}{A matrix representing the variance-covariance matrix of the time to each event (logarithm) for the control arm.}
 }
 \value{
 A list with the following components:\tabular{ll}{
@@ -67,6 +70,6 @@ This function is an intermediate function used inside the OCC.Table function to 
 winratio(currentdd = currentData,n_current = n.current, Time_current = Time.current,
 Time_entry = Time.entry,m0 = c(0,0),L0 = diag(10^6, 2),v0 = 4,S0 = diag(10^(-6), 2),
 time_max = 20,eta = 1,lambda = 0.25,N.max = 100, thin_MCMC = 5,
-Niter = 100000)
+Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))
 } 
 }

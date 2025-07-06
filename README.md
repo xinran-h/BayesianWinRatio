@@ -59,6 +59,12 @@ data or one real data, and returns the operating characteristics.
 - **lambda**: cutoff parameter.
 - **thin_MCMC**: thinning degree.
 - **Niter**: number of iterations for gibbs sampler.
+- **Sigma.ctrl**: If design = 1, this is the matrix representing the
+  variance-covariance matrix of the time to each event (logarithm) for
+  the control arm; otherwise, this is the variance of time to event
+  (logarithm) for the control arm. For example, when design = 2, this is
+  the variance of time to recurrence for the control arm; when design =
+  4, this is the variance of time to first event for the control arm.
 
 The output is a list with the following components:
 
@@ -159,7 +165,7 @@ while (b - a > tolerance) {
     time_max = 100,
     eta = 1.5,
     lambda = c,
-    thin_MCMC = 5,Niter = 100000)}, mc.cores = 100)
+    thin_MCMC = 5,Niter = 100000, Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))}, mc.cores = 100)
   
   ### summarize results from N.sim simulations
   stop.all<-stop.early <-pts.all <-rep(0, N.sim);
@@ -228,7 +234,7 @@ OCC.Table(
     time_max = 100,
     eta = 1.5,
     lambda = 10, # using the lambda calibrated above
-    thin_MCMC = 5,Niter = 100000)
+    thin_MCMC = 5,Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))
 ```
 
 If trialER.stop = 1, we stop the trial early. Otherwise, we continue to
@@ -250,7 +256,7 @@ OCC.Table(
     time_max = 100,
     eta = 1.5,
     lambda = 10, # using the lambda calibrated above
-    thin_MCMC = 5,Niter = 100000)
+    thin_MCMC = 5,Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))
 ```
 
 If trialER.stop = 1, we stop the trial early. Otherwise, we continue to
@@ -272,7 +278,7 @@ OCC.Table(
     time_max = 100,
     eta = 1.5,
     lambda = 10, # using the lambda calibrated above
-    thin_MCMC = 5,Niter = 100000)
+    thin_MCMC = 5,Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))
 ```
 
 If trialER.stop = 1, we stop the trial early. Otherwise, we continue to

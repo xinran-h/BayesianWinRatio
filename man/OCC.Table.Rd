@@ -18,7 +18,8 @@ OCC.Table(
   eta,
   lambda,
   thin_MCMC,
-  Niter
+  Niter,
+  Sigma.ctrl
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ OCC.Table(
 \item{thin_MCMC}{Thinning degree.}
 
 \item{Niter}{Number of iterations for gibbs sampler.}
+
+\item{Sigma.ctrl}{If design = 1, this is the matrix representing the variance-covariance matrix of the time to each event (logarithm) for the control arm; otherwise, this is the variance of time to event (logarithm) for the control arm. For example, when design = 2, this is the variance of time to recurrence for the control arm; when design = 4, this is the variance of time to first event for the control arm.}
 }
 \value{
 A list with the following components:\tabular{ll}{
@@ -77,6 +80,6 @@ recruit.int  = 0.25,
 m0 = c(0,0),L0 = diag(10^6, 2), 
 v0 = 4,S0 = diag(10^(-6), 2),
 time_max = 10,eta = 1.5,lambda = 0.25,
- thin_MCMC = 5,Niter = 100000)
+ thin_MCMC = 5,Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T)
 }
 }

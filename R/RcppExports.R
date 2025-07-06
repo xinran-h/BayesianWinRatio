@@ -4,7 +4,7 @@
 #' update_theta
 #'
 #' This is an interim function used within the winratio function that performs Gibbs sampler and returns posterior mean, covariance matrix, and event times for the proposed design, following Supplementary file S1.
-#' 
+#'
 #' @param N_iter Number of iterations for gibbs sampler.
 #' @param dd The data at a interim analysis point for either treatment or control arm. Either use currentData.trt or currentData.ctrl.
 #' @param n  Sample size at a interim analysis point for either treatment or control arm. Either use n.current.trt or n.current.ctrl.
@@ -13,6 +13,7 @@
 #' @param S0  Prior scale matrix for Sigma.trt/Sigma.ctrl.
 #' @param v0  Prior degrees of freedom for Sigma.trt/Sigma.ctrl.
 #' @param time_max The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.
+#' @param init_Sigma An initial Sigma covariance matrix.
 #' @return A list with the following components:\tabular{ll}{
 #'    \code{MU} \tab A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  \cr
 #'    \tab \cr
@@ -21,8 +22,8 @@
 #'    \tab \cr
 #'    \code{Sigma} \tab A cube with two rows, two columns and N_iter slices. Slice v, v = 1, ..., N_iter, contains posterior covariance matrix generated from the v-th iteration of the gibbs sampler.   \cr
 #' }
-update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max) {
-    .Call(`_BayesianWinRatio_update_theta`, N_iter, dd, n, m0, L0, S0, v0, time_max)
+update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max, init_Sigma) {
+    .Call(`_BayesianWinRatio_update_theta`, N_iter, dd, n, m0, L0, S0, v0, time_max, init_Sigma)
 }
 
 #' update_theta_univariate
@@ -37,9 +38,10 @@ update_theta <- function(N_iter, dd, n, m0, L0, S0, v0, time_max) {
 #' @param v0  v0/2 is the prior shape for Sigma.trt/Sigma.ctrl.
 #' @param S0  v0*S0/2 is the prior scale for Sigma.trt/Sigma.ctrl.
 #' @param time_max The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.
+#' @param init_Sigma A numeric value represents the time to event (logarithm) for the control arm.
 #' @return A list of theta. theta is A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  
-update_theta_univariate <- function(N_iter, dd, n, L0, m0, v0, S0, time_max) {
-    .Call(`_BayesianWinRatio_update_theta_univariate`, N_iter, dd, n, L0, m0, v0, S0, time_max)
+update_theta_univariate <- function(N_iter, dd, n, L0, m0, v0, S0, time_max, init_Sigma) {
+    .Call(`_BayesianWinRatio_update_theta_univariate`, N_iter, dd, n, L0, m0, v0, S0, time_max, init_Sigma)
 }
 
 #' compare

@@ -19,10 +19,11 @@ using namespace arma;
 //' @param v0  v0/2 is the prior shape for Sigma.trt/Sigma.ctrl.
 //' @param S0  v0*S0/2 is the prior scale for Sigma.trt/Sigma.ctrl.
 //' @param time_max The upper limit for the recurrence and death time sampled from truncated normal. This will set the upper limit to to time_max rather than Inf.
+//' @param init_Sigma A numeric value represents the time to event (logarithm) for the control arm.
 //' @return A list of theta. theta is A matrix with N_iter rows and two columns. Row v, v = 1, ..., N_iter, contains posterior mean vector generated from the v-th iteration of the gibbs sampler.  
 // [[Rcpp::export]]
 List update_theta_univariate(int N_iter, NumericMatrix dd, int n, double L0,
-                  double m0,  double v0,double S0, double time_max) {
+                  double m0,  double v0,double S0, double time_max, double init_Sigma) {
   int N = dd.nrow();
   arma::mat theta(N_iter, 2, fill::none);
 
@@ -35,17 +36,18 @@ List update_theta_univariate(int N_iter, NumericMatrix dd, int n, double L0,
   arma::vec col_data_0_rm = col_data_0_lg.elem(find_finite(col_data_0_lg));
  
   // Initialize theta.row(0)
-  theta.row(0)  = {log(2), 10};
+  theta.row(0)  = {log(2), init_Sigma}; //update
 
   arma::mat y_log(N_iter, n, arma::fill::none);
   
   y_log.row(0) = col_data_0_lg.t(); 
   
-  // Replace NA with -1
+  // Replace NA with censoring time. update
 
   for (int j = 0; j < n; ++j) {
   if (NumericVector::is_na(dd(j, 0))) {
-    y_log(0, j) = -1.0;
+    //y_log(0, j) = -1.0;
+    y_log(0, j) = log(dd(j, 1));
   }
 }
   

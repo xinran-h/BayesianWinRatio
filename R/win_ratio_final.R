@@ -17,6 +17,21 @@ est_cens_time = function(fit,n){
   return (Cens.generated)
 }
 
+#' make_pos_def
+#' 
+#'  This function is an intermediate function used inside the winratio function to ensure the sample covariance matrix is positive definite
+#' @param mat   Sample covariance matrix
+#' @param eps a small value to ensure the matrix is positive-definite
+#' @returns A positive definite matrix.
+#' @examples
+#' \dontrun{make_pos_def(temp)}  
+make_pos_def <- function(mat, eps = 1e-6) {
+  if (!isSymmetric(mat)) mat <- (mat + t(mat)) / 2
+  eig <- eigen(mat)
+  eig$values[eig$values < eps] <- eps
+  return(eig$vectors %*% diag(eig$values) %*% t(eig$vectors))
+}
+
 
 #' winratio
 #' 
@@ -39,6 +54,7 @@ est_cens_time = function(fit,n){
 #' @param N.max   Maximum number of patients to enroll.
 #' @param thin_MCMC  Thinning degree.
 #' @param Niter Number of iterations for gibbs sampler.
+#' @param Sigma.ctrl A matrix representing the variance-covariance matrix of the time to each event (logarithm) for the control arm. 
 #' @returns A list with the following components:\tabular{ll}{
 #'    \code{probs} \tab A numeric value, which is the posterior probability of \eqn{(\widehat{WR} > eta)}.  \cr
 #'    \tab \cr
@@ -51,12 +67,12 @@ est_cens_time = function(fit,n){
 #' winratio(currentdd = currentData,n_current = n.current, Time_current = Time.current,
 #' Time_entry = Time.entry,m0 = c(0,0),L0 = diag(10^6, 2),v0 = 4,S0 = diag(10^(-6), 2),
 #' time_max = 20,eta = 1,lambda = 0.25,N.max = 100, thin_MCMC = 5,
-#' Niter = 100000)
+#' Niter = 100000,Sigma.ctrl = matrix(c(1,0.5,0.5,1), nrow = 2, byrow = T))
 #' } 
 
 winratio = function(currentdd,n_current,Time_current,
                     Time_entry, m0,L0,v0,S0,
-                    time_max,eta,lambda,N.max, thin_MCMC, Niter){
+                    time_max,eta,lambda,N.max, thin_MCMC, Niter,Sigma.ctrl){
   
   # update actual censoring time at this interim look
   currentdd[,3] = pmin(Time_current-Time_entry[-n_current], currentdd[,3])
@@ -78,13 +94,28 @@ winratio = function(currentdd,n_current,Time_current,
   currentData.ctrl = currentdd[currentdd[,4]==0,]
   
   # Step 1:Update posterior theta 
+  ## obtain sample covariance as an input for starting value of Sigma, if NA use Sigma.ctrl
+  
+  temp = stats::cov( log(currentData.trt[,1:2]) , use = "pairwise.complete.obs")
+  if (any(is.na(temp))){
+    init_trt_Sigma = make_pos_def(Sigma.ctrl)
+  }else {
+    init_trt_Sigma = make_pos_def(temp)
+  }   
+  
   trt.post = update_theta(N_iter = Niter, dd = currentData.trt, 
                           n = n.current.trt, m0 = m0, L0 = L0, S0 = S0, v0 = v0, 
-                          time_max = time_max)
+                          time_max = time_max, init_Sigma = init_trt_Sigma)
 
+  temp = stats::cov( log(currentData.ctrl[,1:2]) , use = "pairwise.complete.obs")
+  if (any(is.na(temp))){
+    init_ctrl_Sigma =  make_pos_def(Sigma.ctrl)
+  }else {
+    init_ctrl_Sigma = make_pos_def(temp)
+  }   
   ctrl.post = update_theta(N_iter = Niter, dd = currentData.ctrl, 
                            n = n.current.ctrl,m0 = m0, L0 = L0, S0 = S0, v0 = v0, 
-                           time_max = time_max)
+                           time_max = time_max, init_Sigma = init_ctrl_Sigma)
   burn_MCMC = as.integer(0.3*Niter)
   idxs <- seq(burn_MCMC, Niter, by = thin_MCMC)
   M_iter = length(idxs)
@@ -145,6 +176,8 @@ winratio = function(currentdd,n_current,Time_current,
   result = compare(M_iter = M_iter, n_current_ctrl = n.current.ctrl, 
                                 n_current_trt = n.current.trt, postData = postData,
                                 time_trt = time.trt, time_ctrl = time.ctrl, surv_trt = surv.trt, surv_ctrl = surv.ctrl)
+  # Convert Inf values to NA
+  result$WR[result$WR == Inf] <- NA
   WR = mean(result$WR, na.rm = T)
   probs = mean(result$WR > eta, na.rm  = T)  
   cutoff = (n_current/N.max)**lambda
